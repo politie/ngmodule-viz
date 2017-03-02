@@ -24,7 +24,8 @@ Let's visualize the NgModules in this [angular2-realworld-example-app](https://g
 * `ngmodule-viz angular2-realworld-example-app/ .`
 * `http-server`
 * open http://localhost:8080/ and you'll see this:
-![ngmodule-viz demo](https://github.com/politie/ngmodule-viz/demo/ngmodule-viz-demo.gif "ngmodule-viz demo")
+
+![ngmodule-viz demo](https://github.com/politie/ngmodule-viz/blob/master/demo/ngmodule-viz-demo.gif "ngmodule-viz demo")
 
 ## Building
 * Clone this project
