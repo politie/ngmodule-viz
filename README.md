@@ -17,6 +17,15 @@ Commandline tool to visualize the dependencies between the @NgModules in your An
 * Open http://localhost:8080/
 * Enjoy the graph of your NgModules!
 
+## Example
+Let's visualize the NgModules in this [angular2-realworld-example-app](https://github.com/gothinkster/angular2-realworld-example-app).
+
+* `git clone https://github.com/gothinkster/angular2-realworld-example-app`
+* `ngmodule-viz angular2-realworld-example-app/ .`
+* `http-server`
+* open http://localhost:8080/ and you'll see this:
+![ngmodule-viz demo](https://github.com/politie/ngmodule-viz/demo/ngmodule-viz-demo.gif "ngmodule-viz demo")
+
 ## Building
 * Clone this project
 * Install typescript: `npm install -g typescript`
