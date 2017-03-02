@@ -1,0 +1,22 @@
+{
+  "name": "ngmodule-viz",
+  "version": "1.0.3",
+  "description": "Visualize the dependencies between the NgModules in your Angular 2+ application",
+  "typings": "out/index.d.ts",
+  "scripts": {
+    "build:watch": "tsc --watch",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/politie/ngmodule-viz.git"
+  },
+  "bin": { "ngmodule-viz" : "./out/main.js" },
+  "keywords": ["angular", "angular2", "ngmodule", "dependencies", "visualization", "dependency graph"],
+  "author": "Nationale Politie",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "globby": "^6.1.0"
+  }
+}

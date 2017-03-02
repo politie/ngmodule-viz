@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body, .container {
+    background-color: white;
+    margin: 0px;
+}
+
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+.graph {
+    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+}
+
+#filterbox {
+    font-size: .90em;
+    font-family: Arial, sans-serif;
+    position: absolute;
+    z-index: 2;
+    background-color: #FFF;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid;
+    min-height: 3px;
+    min-width: 8px;
+}
+.item-group {
+    margin-bottom: 5px;
+}
+.item-group .item-label {
+    text-align: right;
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+    min-height: 1px;
+    display: inline;
+    padding-right: 5px;
+}
+.checkbox {
+    margin-left: 10px;
+    margin-top: 5px;
+    clear: both;
+}
+</style>
+<body>
+    <div id="container" class="container">
+        <div id="filterbox" style="display: none;">
+            <div class="item-group">
+                <label class="item-label">Filter</label>
+                <div id="filterContainer" class="filterContainer checkbox"></div>
+            </div>
+        </div>
+        <div id="graph" class="graph"></div>
+    </div>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+    $.getJSON('ngmodules.json', function(links) {
+        var nodes = {};
+
+        // Compute the distinct nodes from the links.
+        links.forEach(function(link) {
+            link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+            link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+        });
+
+        var width = $(window).width(),
+            height = $(window).height();
+
+        var force = d3.layout.force()
+            .nodes(d3.values(nodes))
+            .links(links)
+            .size([width, height])
+            .linkDistance(height / 4)
+            .charge(-700)
+            .on("tick", tick)
+            .start();
+
+        var svg = d3.select(".graph").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        svg.append("defs").selectAll("marker")
+            .data(["end"])
+        .enter().append("marker")
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -1.5)
+            .attr("markerWidth", 5)
+            .attr("markerHeight", 5)
+            .attr("orient", "auto")
+        .append("path")
+            .attr("d", "M0,-5L10,0L0,5");
+
+        var path = svg.append("g").selectAll("path")
+            .data(force.links())
+        .enter().append("path")
+            .attr("class", "link")
+            .attr("marker-end", "url(#end)");
+
+        var circle = svg.append("g").selectAll("circle")
+            .data(force.nodes())
+        .enter().append("circle")
+            .attr("r", 6)
+            .call(force.drag);
+
+        var text = svg.append("g").selectAll("text")
+            .data(force.nodes())
+        .enter().append("text")
+            .attr("x", 8)
+            .attr("y", ".31em")
+            .attr("class", "nodeText")
+            .text(function(d) { return d.name; });
+
+        function tick() {
+            path.attr("d", linkArc);
+            circle.attr("transform", transform);
+            text.attr("transform", transform);
+        }
+
+        function linkArc(d) {
+            var dx = d.target.x - d.source.x,
+                dy = d.target.y - d.source.y,
+                dr = Math.sqrt(dx * dx + dy * dy);
+            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+        }
+
+        function transform(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        }
+
+        circle.on('mouseover', function(d) {
+            path.style('stroke', function(l) {
+                if (d === l.source || d === l.target)
+                    return '#f00'; // highlight link
+                else
+                    return '#666';
+            });
+        });
+
+        circle.on('mouseout', function() {
+            path.style('stroke', '#666');
+        });
+
+        // create filterbox
+        d3.select(".filterContainer").selectAll("div")
+            .data([true])
+            .enter()  
+            .append("div")
+            .attr("class", "checkbox-container")
+            .append("label")
+            .each(function (d) {
+                // create checkbox
+                d3.select(this).append("input")
+                    .attr("type", "checkbox")
+                    .attr("checked", true)
+                    .attr("id", "checkbox_externalmodule")
+                    .on("click", function (d, i) {
+                        filterGraph(d, this.checked ? "visible" : "hidden");
+                    })
+                d3.select(this).append("span").text('include 3rd party modules and routing modules');
+        });
+        $("#filterbox").show();
+
+        function filterGraph(externalmodule, visibility) {
+            // link visibility
+            path.style("visibility", function (o) {
+                var originalVisibility = $(this).css("visibility");
+                return o.externalmodule === externalmodule ? visibility : originalVisibility;
+            });
+
+            // node visibility
+            circle.style("visibility", function (o, i) {
+                var hideNode = true;
+                path.each(function (d, i) {
+                    if (d.source === o || d.target === o) {
+                        if ($(this).css("visibility") === "visible") {
+                            hideNode = false;
+                            // show text
+                            d3.select(d3.selectAll(".nodeText")[0][i]).style("visibility", "visible");
+                            return "visible";
+                        }
+                    }
+                });
+                if (hideNode) {
+                    // hide text
+                    d3.select(d3.selectAll(".nodeText")[0][i]).style("visibility", "hidden");
+                    return "hidden";
+                }
+            });
+        }
+    });
+    </script>
+</body>

@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/c8b4fd92cbe3bb02fc657ca58c9bd9bfbb1e7380/commander/index.d.ts",
+    "raw": "registry:dt/commander#2.3.0+20161118092844",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/c8b4fd92cbe3bb02fc657ca58c9bd9bfbb1e7380/commander/index.d.ts"
+  }
+}
