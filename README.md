@@ -1,4 +1,5 @@
-# NgModules visualization
+# NgModules visualization 
+[![npm version](https://badge.fury.io/js/ngmodule-viz.svg)](https://badge.fury.io/js/ngmodule-viz)
 
 Commandline tool to visualize the dependencies between the @NgModules in your Angular 2+ application.
 
