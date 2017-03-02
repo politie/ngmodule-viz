@@ -91,4 +91,3 @@ jspm_packages
 
 # Yarn package manager (https://yarnpkg.com) (https://github.com/yarnpkg/yarn.git)
 yarn.lock
-/src/app/widgets/search/filters/case-filter/case.filter.html
