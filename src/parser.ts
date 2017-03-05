@@ -59,7 +59,7 @@ export class Parser {
     }
 
     private extractModuleImports(filename: string, fileContent: string): string[] {
-        const MODULE_REGEX = new RegExp(/@NgModule\(\{(.|\n)*\}\)/gm); // match @NgModule()
+        const MODULE_REGEX = new RegExp(/@NgModule\(\{(.|\s)*\}\)/gm); // match @NgModule()
 
         let moduleMatch = fileContent.match(MODULE_REGEX);
         if (!moduleMatch) {
