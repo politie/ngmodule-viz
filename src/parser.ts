@@ -59,7 +59,7 @@ export class Parser {
     }
 
     private extractModuleImports(filename: string, fileContent: string): string[] {
-        const MODULE_REGEX = new RegExp(/@NgModule\(\{(.|\s)*\}\)/gm); // match @NgModule()
+        const MODULE_REGEX = new RegExp(/@NgModule\(\{(.|\r?\n*\}\)/gm); // match @NgModule()
 
         let moduleMatch = fileContent.match(MODULE_REGEX);
         if (!moduleMatch) {
@@ -67,8 +67,8 @@ export class Parser {
             return;
         }
 
-        const PREFIX_REGEX = new RegExp(/(.|\n)+?(?=\[)\[/); // strip everything at the start of the module (e.g. 'imports' keyword)
-        const SUFFIX_REGEX = new RegExp(/\](.|\n)*/gm); // strip everything after the imports (e.g. exports, declarations, etc)
+        const PREFIX_REGEX = new RegExp(/(.|\r?\n)+?(?=\[)\[/); // strip everything at the start of the module (e.g. 'imports' keyword)
+        const SUFFIX_REGEX = new RegExp(/\](.|\r?\n)*/gm); // strip everything after the imports (e.g. exports, declarations, etc)
         const WHITESPACE_REGEX = new RegExp(/\s/g); // strip any remaining whitespace
         const SINGLE_QUOTE_REGEX = new RegExp(',', 'g')
         const ARRAY_START = '[ \"';
