@@ -1,6 +1,6 @@
 {
   "name": "ngmodule-viz",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Visualize the dependencies between the NgModules in your Angular 2+ application",
   "typings": "out/index.d.ts",
   "scripts": {
