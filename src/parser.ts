@@ -6,6 +6,7 @@ export class Parser {
     private readonly NG_MODULE_FILEPATTERN = '*.module.ts';
     private readonly RESULT_FILE = 'ngmodules.json';
     private readonly HTML_FILE = 'index.html';
+    private readonly CSS_FILE = 'style.css';
 
     parseNgModulesAndWriteToJson(inputPath: string, outputPath: string) {
         console.log('parsing ngmodules in:', inputPath);
@@ -84,6 +85,7 @@ export class Parser {
         try {
             fs.writeFileSync(path.join(outputPath, this.RESULT_FILE), JSON.stringify(result));
             fs.writeFileSync(path.join(outputPath, this.HTML_FILE), fs.readFileSync(path.join(__dirname, this.HTML_FILE)));
+            fs.writeFileSync(path.join(outputPath, this.CSS_FILE), fs.readFileSync(path.join(__dirname, this.CSS_FILE)));
             console.log('output written to:', outputPath);
         } catch (e) {
             console.error('error writing results', e);
