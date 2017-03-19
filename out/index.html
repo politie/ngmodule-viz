@@ -91,8 +91,13 @@
 
         circle.on('mouseover', function(d) {
             path.style('stroke', function(l) {
-                if (d === l.source || d === l.target)
-                    return '#f00'; // highlight link
+                if (d === l.source || d === l.target) {
+                    if (l.circular) {
+                        return '#f00'; // highlight link
+                    } else {
+                        return '#208720';
+                    }
+                }
                 else
                     return '#666';
             });

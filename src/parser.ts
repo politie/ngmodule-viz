@@ -40,7 +40,17 @@ export class Parser {
             imports.forEach((moduleImport) => {
                 let externalModule = !modulesWithImports.has(moduleImport);
                 if (moduleImport) {
-                    let d3json = { 'source': classname, 'target': moduleImport, 'externalmodule': externalModule};
+                    let d3json = { 'source': classname, 'target': moduleImport, 'externalmodule': externalModule, 'circular': false};
+
+                    let circularDependency = result.filter(function (jsonItem) {
+                        return jsonItem.source === moduleImport && jsonItem.target === classname;
+                    });
+
+                    if (circularDependency.length > 0) {
+                        d3json.circular = true;
+                        circularDependency[0].circular = true;
+                    }
+
                     result.push(d3json);
                 }
             });
