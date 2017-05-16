@@ -27,6 +27,11 @@ Let's visualize the NgModules in this [angular2-realworld-example-app](https://g
 
 ![ngmodule-viz demo](https://github.com/politie/ngmodule-viz/blob/master/demo/ngmodule-viz-demo.gif "ngmodule-viz demo")
 
+## Jenkins integration
+* Run ngmodule-viz in your Jenkins pipeline
+* Use the HTML publisher plugin to publish the resulting html file
+* To avoid CORS issues disable Jenkins CSP using the Jenkins CLI: `System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")`. WARNING: the latter assumes you have otherwise secured your Jenkins instance. Don't execute this on public instances.
+
 ## Building
 * Clone this project
 * Install typescript: `npm install -g typescript`
